@@ -19,6 +19,8 @@ class S3Notifier {
     this.s3 = new AWS.S3({
       apiVersion: '2006-03-01',
       signatureVersion: 'v4',
+      accessKeyId: options.accessKeyId,
+      secretAccessKey: options.secretAccessKey,
       region: options.region
     });
   }
@@ -31,8 +33,11 @@ class S3Notifier {
   }
 
   getCurrentLastModified() {
+    console.log('calll init')
     return this.s3.headObject(this.params).promise()
       .then(data => {
+        console.log("jorge data: ");
+        console.log(data);
         this.lastModified = data.LastModified;
       })
       .catch(() => {
